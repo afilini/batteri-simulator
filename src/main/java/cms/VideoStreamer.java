@@ -58,11 +58,11 @@ public class VideoStreamer extends Thread {
         coder.setFrameRate(frameRate);
         coder.setTimeBase(IRational.make(frameRate.getDenominator(), frameRate.getNumerator()));
         Properties props = new Properties();
-        InputStream is = VideoStreamer.class.getResourceAsStream("/libx264-normal.ffpreset");
+        InputStream is = VideoStreamer.class.getResourceAsStream("/libx264-hq.ffpreset");
         try {
             props.load(is);
         } catch (IOException e) {
-            System.err.println("You need the libx264-normal.ffpreset file from the Xuggle distribution in your classpath.");
+            System.err.println("You need the libx264-hq.ffpreset file from the Xuggle distribution in your classpath.");
             System.exit(1);
         }
         Configuration.configure(props, coder);
@@ -73,15 +73,12 @@ public class VideoStreamer extends Thread {
 
         long firstTimeStamp = System.currentTimeMillis();
         long lastTimeStamp = -1;
-        int i;
-
 
         try {
             Countdown countdown = new Countdown(container, coder, frameRate, 10);
             countdown.run();
 
             main.setStartTime();
-            i = 0;
 
             while (System.currentTimeMillis() - firstTimeStamp < ((60 * 5) + 20) * 1000) {
                 //long iterationStartTime = System.currentTimeMillis();
@@ -92,10 +89,6 @@ public class VideoStreamer extends Thread {
                 long timeStamp = (now - firstTimeStamp) * 1000;
                 IVideoPicture outFrame = converter.toPicture(image, timeStamp);
                 outFrame.setQuality(3);
-
-                if (i % 8 == 0) {
-                    outFrame.setKeyFrame(true);
-                }
 
                 coder.encodeVideo(packet, outFrame, 0);
                 outFrame.delete();
@@ -111,8 +104,6 @@ public class VideoStreamer extends Thread {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
-                i++;
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -5,7 +5,6 @@ import batteri.Batterio;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.lang.Exception;
 import java.util.*;
 
 /**
