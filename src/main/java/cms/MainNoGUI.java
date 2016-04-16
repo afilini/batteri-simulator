@@ -1,8 +1,6 @@
 package cms;
 
 import batteri.Batterio;
-//import com.google.gson.Gson;
-//import com.sun.tools.internal.ws.wsdl.document.jaxws.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
