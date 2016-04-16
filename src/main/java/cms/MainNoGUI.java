@@ -29,6 +29,8 @@ public class MainNoGUI {
     private ArrayList<String> nomiBatteri;
     private Terrain terrain;
 
+    private String rtmpUrl;
+
     protected HashMap<String, Status> stati = new HashMap<>();
     private long startTime;
 
@@ -36,7 +38,7 @@ public class MainNoGUI {
 
     private static Color[] COLORS = {Color.BLUE, Color.RED, Color.MAGENTA, new Color(117,4,128), Color.WHITE, new Color(163,166,201)};
 
-    public MainNoGUI(String nomiClassiBatteri[]) {
+    public MainNoGUI(String nomiClassiBatteri[], String rtmpUrl) {
         Vector<Class> classes = new Vector<>();
         for (String name: nomiClassiBatteri) {
             try {
@@ -54,7 +56,7 @@ public class MainNoGUI {
 
         terrain = new Terrain(food, batteri, Color.yellow, numeroBatteri);
 
-        streamer = new VideoStreamer(this);
+        streamer = new VideoStreamer(this, rtmpUrl);
         streamer.start();
     }
 
@@ -193,6 +195,11 @@ public class MainNoGUI {
     }
 
     public static void main (String args[]) {
-        new MainNoGUI(args);
+        String rtmpUrl = args[0];
+
+        String[] nomiBatteri = new String[args.length - 1];
+        System.arraycopy(args, 1, nomiBatteri, 0, args.length - 1);
+
+        MainNoGUI main = new MainNoGUI(nomiBatteri, rtmpUrl);
     }
 }

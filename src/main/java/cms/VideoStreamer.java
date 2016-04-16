@@ -15,15 +15,16 @@ public class VideoStreamer extends Thread {
     private MainNoGUI main;
 
     //private static String url = "rtmp://live.vng.hitbox.tv/push/afilini?key=Ok8KMuPA";
-    private static String url = "rtmp://localhost/mytv/test";
-    private static int height = 700;
-    private static int width = 1024;
+    private String url;
+    private final static int height = 700;
+    private final static int width = 1024;
 
     private final static int FPS = 8;
 
-    public VideoStreamer(MainNoGUI main) {
+    public VideoStreamer(MainNoGUI main, String url) {
         super("Streamer");
         this.main = main;
+        this.url = url;
     }
 
     @Override
@@ -34,6 +35,7 @@ public class VideoStreamer extends Thread {
         containerFormat_live.setOutputFormat("flv", url, null);
         container.setInputBufferLength(0);
 
+        System.out.println("Opening output container " + url);
         int retVal = container.open(url, IContainer.Type.WRITE, containerFormat_live);
         if (retVal < 0) {
             System.err.println("Could not open output container for live stream");
