@@ -1,14 +1,14 @@
 package cms;
 
 import com.google.gson.Gson;
+import utils.Status;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Vector;
+import java.util.Collection;
 
 /**
  * Copyright (C) Alekos Filini (afilini) - All Rights Reserved
@@ -21,14 +21,21 @@ import java.util.Vector;
  */
 
 public class ResultSender {
+    private final String pushUrl;
 
-    public static boolean send (Vector<Status> result) throws IOException {
+    public ResultSender(String pushUrl) {
+        this.pushUrl = pushUrl;
+    }
+
+    public <T extends Collection<Status>> void send(T result) throws IOException {
         Gson gson = new Gson();
         System.out.println(gson.toJson(result));
 
-        URL url = new URL("http://localhost/bcms/utils/saveMatch.php");
+        URL url = new URL(pushUrl + "/utils/saveMatch.php");
+        System.out.println("[ResultSender] using " + pushUrl + " as root");
+
         URLConnection con = url.openConnection();
-        HttpURLConnection http = (HttpURLConnection)con;
+        HttpURLConnection http = (HttpURLConnection) con;
         http.setRequestMethod("POST");
         http.setDoOutput(true);
 
@@ -39,10 +46,8 @@ public class ResultSender {
         http.setRequestProperty("X-Magic", "06da66efdb0c95f723d2b06369505eadbca9ff7f721cec1f7437a7fd8cb9c947");
         http.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         http.connect();
-        try (OutputStream os = http.getOutputStream()) {
-            os.write(out);
-        }
 
-        return true;
+        OutputStream os = http.getOutputStream();
+        os.write(out);
     }
 }

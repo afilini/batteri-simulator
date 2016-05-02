@@ -1,4 +1,4 @@
-package cms;
+package utils;
 
 /**
  * Copyright (C) Alekos Filini (afilini) - All Rights Reserved
@@ -28,5 +28,21 @@ public class Status {
     @Override
     public String toString() {
         return String.format("%s %b %d", name, dead, dead ? time : num);
+    }
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public long getNum() {
+        return num;
+    }
+
+    public String getName() {
+        return name;
     }
 }

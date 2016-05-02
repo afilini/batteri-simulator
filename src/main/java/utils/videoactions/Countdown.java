@@ -1,4 +1,4 @@
-package cms.videoactions;
+package utils.videoactions;
 
 import com.xuggle.xuggler.*;
 import com.xuggle.xuggler.video.ConverterFactory;
@@ -10,38 +10,26 @@ import java.awt.image.BufferedImage;
 /**
  * Copyright (C) Alekos Filini (afilini) - All Rights Reserved
  * <p/>
- * This file is part of cms.videoactions
+ * This file is part of utils.videoactions
  * <p/>
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
  * Written by Alekos Filini <alekos.filini@gmail.com>, marzo 2016
  */
 
-public class Countdown {
-    private IContainer container;
-    private IStreamCoder coder;
+public class Countdown extends GenericAction {
 
-    private int duration;
-    private IRational framerate;
-
-    private int offset;
-    private long frameDuration;
+    // TODO: javadoc
 
     public Countdown(IContainer container, IStreamCoder coder, IRational framerate, int duration, int offset) {
-        this.container = container;
-        this.coder = coder;
-
-        this.framerate = framerate;
-        this.duration = duration;
-        this.offset = offset;
-
-        this.frameDuration = (long) (1000 / framerate.getDouble());
+        super(container, coder, framerate, duration, offset);
     }
 
     public Countdown(IContainer container, IStreamCoder coder, IRational framerate, int duration) {
-        this(container, coder, framerate, duration, 0);
+        super(container, coder, framerate, duration);
     }
 
+    @Override
     public void run() {
         int frameCount = 0;
 
