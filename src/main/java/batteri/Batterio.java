@@ -20,14 +20,15 @@ package batteri;
 
 import cms.Food;
 
-import java.awt.Color;
+import java.awt.*;
 
 /**
- * Classe astratta genitore della gerarchia dei cms.
+ * Classe astratta genitore della gerarchia dei batteri.
  * Ogni tipo diverso di batterio eredita da questa classe
  *
  * @author Alessandro Bugatti
  */
+
 abstract public class Batterio {
     final private int DELTA;
     final static int MAX_LIFE = 1500;
@@ -80,12 +81,13 @@ abstract public class Batterio {
      * Sposta il batterio nel terreno. Deve essere ridefinita nelle classi
      * ereditate per dar loro un comportamento diverso
      */
-    abstract protected void Sposta();
+    abstract protected void sposta();
 
     /**
-     * \brief Controlla se c'è del cibo nella posizione occupata dal batterio
+     * Controlla se c'è del cibo nella posizione occupata dal batterio
+     * @return true se il cibo e' presente nella cella dove si trova il batterio
      */
-    protected final boolean ControllaCibo() {
+    protected final boolean controllaCibo() {
         return food.isFood(getX(), getY());
     }
 
@@ -94,8 +96,10 @@ abstract public class Batterio {
      *
      * @param X Posizione x dove cercare il cibo
      * @param Y Posizione y dove cercare il cibo
+     *
+     * @return true se il cibo e' presente nella cella richiesta
      */
-    protected final boolean ControllaCibo(int X, int Y) {
+    protected final boolean controllaCibo(int X, int Y) {
         return food.isFood(X, Y);
     }
 
@@ -103,8 +107,8 @@ abstract public class Batterio {
      * Se nella posizione occupata dal batterio c'è del cibo lo mangia
      * e incrementa la sua salute di DELTA
      */
-    private final void Mangia() {
-        if (ControllaCibo()) {
+    private void mangia() {
+        if (controllaCibo()) {
             food.eatFood(x, y);
             salute += DELTA;
         }
@@ -112,8 +116,9 @@ abstract public class Batterio {
 
     /**
      * Controlla se un batterio è fecondo
+     * @return true se il batterio e' fecondo
      */
-    public final boolean Fecondo() {
+    public final boolean fecondo() {
         if ((duplica == 0) && (salute > BUONA_SALUTE)) {
             duplica = BUONA_SALUTE;
             return true;
@@ -124,31 +129,32 @@ abstract public class Batterio {
     /**
      * Controlla se un batterio è morto o perchè
      * troppo vecchio o perchè non ha abbastanza salute
+     *
+     * @return true se il batterio e' morto
      */
-    public final boolean Morto() {
-        if ((salute < 1) || (eta < 1)) return true;
-        else return false;
+    public final boolean morto() {
+        return (salute < 1) || (eta < 1);
     }
 
     /**
      * Esegue le mosse del batterio
      */
-    final public void Run() {
-        if (Morto()) return;
+    final public void run() {
+        if (morto()) return;
         int xprec = getX();
         int yprec = getY();
         /*Calcolo le nuove coordinate del batterio*/
-        Sposta();
-	/*Mangia l'eventuale cibo*/
-        Mangia();
-	/*Faccio invecchiare il batterio*/
+        sposta();
+        /*Mangia l'eventuale cibo*/
+        mangia();
+        /*Faccio invecchiare il batterio*/
         eta--;
-	/*Diminuisce la sua salute
-	in funzione dello spostamento effettuato secondo una
-	metrica Manhattan*/
+        /*Diminuisce la sua salute
+	    in funzione dello spostamento effettuato secondo una
+	    metrica Manhattan*/
         int sforzo = Math.abs(getX() - xprec) + Math.abs(getY() - yprec);
         salute -= sforzo;
-	/*Diminuisce il tempo per la riproduzione,
+        /*Diminuisce il tempo per la riproduzione,
           solo se si è mosso, altrimenti no*/
         if (duplica > 0 && sforzo != 0) duplica--;
     }
@@ -159,7 +165,7 @@ abstract public class Batterio {
      * @return Un nuovo baterio creato con la stessa posizione
      * di quello originale
      */
-    abstract public Batterio Clona();
+    abstract public Batterio clona();
 
     /**
      * @return the x

@@ -16,28 +16,25 @@
   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-package utils;
+package cms;
 
-import java.util.Comparator;
+import video.VideoStreamer;
 
 /**
- * Comparatore usato per ordinare gli stati finali dei batteri. Viene data precedenza ai
- * batteri rimasti in vita in maggior numero, in caso di morte vengono privilegiati
- * i batteri che sono sopravvissuti piu a lungo
+ * Classe che contiene il main da avviare e si occupa del parsing degli arguments passati da linea di comando.
+ * Crea un nuovo {@link Simulator} e un nuovo {@link VideoStreamer} e avvia lo stream
  */
 
-public final class StatusComparator implements Comparator<Status> {
-    @Override
-    public int compare(Status o1, Status o2) {
-        if (o1.isDead() && o2.isDead())
-            return (int) (o2.getTime() - o1.getTime());
+public class Main {
+    public static void main(String args[]) {
+        String rtmpUrl = args[0];
+        String pushUrl = args[1];
 
-        if (o1.isDead())
-            return 1;
+        String[] nomiBatteri = new String[args.length - 2];
+        System.arraycopy(args, 2, nomiBatteri, 0, args.length - 2);
 
-        if (o2.isDead())
-            return -1;
-
-        return (int) (o2.getNum() - o1.getNum());
+        Simulator simulator = new Simulator(nomiBatteri, pushUrl);
+        VideoStreamer streamer = new VideoStreamer(simulator, rtmpUrl, 1024, 700, 8);
+        streamer.start();
     }
 }

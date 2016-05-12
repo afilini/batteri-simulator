@@ -4,7 +4,7 @@
     <groupId>bacteria</groupId>
     <artifactId>bacteria</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <name>bacteria</name>
     <url>http://maven.apache.org</url>
 
@@ -26,7 +26,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>cms.MainNoGUI</mainClass>
+                            <mainClass>cms.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

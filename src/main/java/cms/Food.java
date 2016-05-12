@@ -60,8 +60,8 @@ public class Food {
      */
     public void squareDistribution(int l, int q)
     {
-        int randx = random.nextInt(width - l);
-        int randy = random.nextInt(height - l);
+        int randx = random.nextInt(width - l + 1);
+        int randy = random.nextInt(height - l + 1);
         for (int i = 0; i < q; i++)
             food[random.nextInt(l) + randx][random.nextInt(l) + randy] = true;
     }
@@ -74,7 +74,17 @@ public class Food {
      */
     public boolean isFood(int x, int y)
     {
-        return food[x][y];
+        if (x < 0)
+            x = 0;
+        else if (x >= width - 1)
+            x = x - 1;
+
+        if (y < 0)
+            y = 0;
+        else if (y >= height - 1)
+            y = y - 1;
+
+        return food[x][y] && food[x + 1][y] && food[x][y + 1] && food[x + 1][y + 1];
     }
 
     /**
@@ -84,10 +94,12 @@ public class Food {
      */
     public void eatFood(int x, int y)
     {
-        food[x][y] = false;
-        food[x+1][y] = false;
-        food[x][y+1] = false;
-        food[x+1][y+1] = false;
+        if (x > 0 && x < width - 1 && y > 0 && y < height - 1) {
+            food[x][y] = false;
+            food[x + 1][y] = false;
+            food[x][y + 1] = false;
+            food[x + 1][y + 1] = false;
+        }
     }
     
     /**
