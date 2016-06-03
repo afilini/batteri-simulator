@@ -76,7 +76,7 @@ public class SimulatorAction extends GenericAction {
             long timeStamp = (now - firstTimeStamp) * 1000 + offset;
             IVideoPicture outFrame = converter.toPicture(image, timeStamp);
 
-            coder.encodeVideo(packet, outFrame, 100000);
+            coder.encodeVideo(packet, outFrame, 1000000);
             outFrame.delete();
 
             if (packet.isComplete()) {

@@ -30,8 +30,10 @@ public class Main {
         String rtmpUrl = args[0];
         String pushUrl = args[1];
 
-        String[] nomiBatteri = new String[args.length - 2];
-        System.arraycopy(args, 2, nomiBatteri, 0, args.length - 2);
+        int len = Math.min(6, args.length - 2);
+
+        String[] nomiBatteri = new String[len];
+        System.arraycopy(args, 2, nomiBatteri, 0, len);
 
         Simulator simulator = new Simulator(nomiBatteri, pushUrl);
         VideoStreamer streamer = new VideoStreamer(simulator, rtmpUrl, 1024, 700, 8);

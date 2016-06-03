@@ -18,7 +18,7 @@
 
 package cms;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -85,11 +85,11 @@ public class FoodTest {
 
     @Test
     public void testEatFood() {
-        Food f = new Food(2, 2);
-        f.squareDistribution(2, 4);
+        Food f = new Food(10, 10);
+        f.squareDistribution(5, 100);
 
-        for (int i = 0; i < f.getWidth(); i++)
-            for (int j = 0; j < f.getHeight(); j++)
+        for (int i = 1; i < f.getWidth() - 1; i++)
+            for (int j = 1; j < f.getHeight() - 1; j++)
                 if (f.isFood(i, j)) {
                     f.eatFood(i, j);
                     Assert.assertFalse(f.isFood(i, j));

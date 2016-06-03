@@ -74,17 +74,7 @@ public class Food {
      */
     public boolean isFood(int x, int y)
     {
-        if (x < 0)
-            x = 0;
-        else if (x >= width - 1)
-            x = x - 1;
-
-        if (y < 0)
-            y = 0;
-        else if (y >= height - 1)
-            y = y - 1;
-
-        return food[x][y] && food[x + 1][y] && food[x][y + 1] && food[x + 1][y + 1];
+        return x > 0 && x <= width && y > 0 && y <= height && food[x][y];
     }
 
     /**
@@ -94,12 +84,12 @@ public class Food {
      */
     public void eatFood(int x, int y)
     {
-        if (x > 0 && x < width - 1 && y > 0 && y < height - 1) {
+        try {
             food[x][y] = false;
             food[x + 1][y] = false;
             food[x][y + 1] = false;
             food[x + 1][y + 1] = false;
-        }
+        } catch (ArrayIndexOutOfBoundsException e) {}
     }
     
     /**

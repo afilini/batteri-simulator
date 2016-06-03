@@ -80,12 +80,12 @@ public class VideoStreamer extends Thread {
         /*
          * Creo uno stream (per il video) e imposto come codec H.264
          */
-        IStream stream = container.addNewStream(0);
+        IStream stream = container.addNewStream(ICodec.ID.CODEC_ID_H264);
         IStreamCoder coder = stream.getStreamCoder();
         ICodec codec = ICodec.findEncodingCodec(ICodec.ID.CODEC_ID_H264);
         coder.setNumPicturesInGroupOfPictures(3);
         coder.setCodec(codec);
-        coder.setBitRate(4000000);
+        coder.setBitRate(1000000);
 
         /*
          * Imposto le dimensioni del video e la rappresentazione dei pixel
@@ -104,11 +104,11 @@ public class VideoStreamer extends Thread {
         /*
          * Carico il profilo per la codifica del video in ffmpeg
          */
-        InputStream is = VideoStreamer.class.getResourceAsStream("/libx264-hq.ffpreset");
+        InputStream is = VideoStreamer.class.getResourceAsStream("/libx264-normal.ffpreset");
         try {
             props.load(is);
         } catch (IOException e) {
-            System.err.println("You need the libx264-hq.ffpreset file from the in your classpath.");
+            System.err.println("You need the libx264-normal.ffpreset file from the in your classpath.");
             System.exit(1);
         }
         Configuration.configure(props, coder);
@@ -120,10 +120,12 @@ public class VideoStreamer extends Thread {
             /*
              * Creo un'azione di simulazione passandogli il simulatore della durata di 5 minuti
              */
-            SimulatorAction simulation = new SimulatorAction(container, coder, frameRate, 2 * 60, simulator);
+            SimulatorAction simulation = new SimulatorAction(container, coder, frameRate, 5 * 60, simulator);
             simulation.run();
         } catch (Exception e) {
             e.printStackTrace();
+            container.writeTrailer();
+            System.exit(1);
         }
 
         /*
