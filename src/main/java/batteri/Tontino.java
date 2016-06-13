@@ -20,19 +20,20 @@ package batteri;
 
 import cms.Food;
 
-import java.awt.Color;
+import java.awt.*;
 
 /**
  * Classe d'esempio per la gara
- * @author Alessandro Bugatti <alessandro.bugatti@gmail.com>
+ * @author Alessandro Bugatti (alessandro.bugatti@gmail.com)
  */
 
-public class Tontino extends Batterio {
+public final class Tontino extends Batterio {
     public Tontino(int x, int y, Color c, Food f){
         super(x,y,c,f);
     }
+
     @Override
-    protected void Sposta(){
+    protected void sposta() {
         int dx = (int)(Math.random()*3) - 1;
         int dy = (int)(Math.random()*3) - 1;
         if (x+dx >= 0 && x+dx<food.getWidth())
@@ -43,8 +44,8 @@ public class Tontino extends Batterio {
     }
     
     @Override
-    public Batterio Clona(){
-       return new Tontino(x,y,colore,food); 
+    public Batterio clona() {
+        return new Tontino(x, y, colore, food);
     }
     
     @Override
